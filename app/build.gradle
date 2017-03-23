@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+apply plugin: 'maven'
+
+//apply plugin: 'adeum'  //This line is added for AppDynamics
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+        applicationId "com.clover.www.myapp"
+        minSdkVersion 21
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    //选择相应的buildTypes和productFlavors完成一次完整的build
+    buildTypes {
+
+        devDebug {
+            minifyEnabled false
+            shrinkResources false
+        }
+
+        release {
+            //压缩代码--剔除工程中没有使用的代码（会拖慢build的速度）
+            minifyEnabled true
+            //压缩资源--只与压缩代码一起工作，确定工程中未使用的资源，在build时将相应的资源剔除
+            //如果使用通配符，系统则认为与通配符相符的资源均为使用资源
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        flavor_1 {
+
+        }
+        flavor_2 {
+
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //    testCompile 'junit:junit:4.12'
+    compile files('libs/volley.jar')
+    //This line is added for AppDynamics
+    //    compile 'com.appdynamics:appdynamics-runtime:4.+'
+    //    compile 'org.jetbrains:annotations-java5:15.0'
+    compile files('libs/pinyin4j-2.5.0.jar')
+    compile project(':PullToRefresh')
+    compile files('libs/ormlite-android-5.0.jar')
+    compile files('libs/ormlite-core-5.0.jar')
+    //增加这个support包用于apk中方法数超过64K（65536）的情况
+    //5.0以上由于使用ART，原生支持应用加载多个dex文件，因此无需添加
+//    compile 'com.android.support:appcompat-v7:22.2.1'
+//    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:support-v4:25.1.0'
+    testCompile 'junit:junit:4.12'
+}
+
+//adeum {
+//    account {
+//        name 'HSBCHoldingsplc-a0q3400000DJstNEAT'
+//        licenseKey 'AD-AAB-AAC-PZS'
+//    }
+//
+//    proguardMappingFileUpload {
+//       failBuildOnUploadFailure true
+//        enabled true
+//    }
+//}
